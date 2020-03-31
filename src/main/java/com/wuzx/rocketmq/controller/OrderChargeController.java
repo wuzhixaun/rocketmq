@@ -4,6 +4,7 @@ import com.wuzx.rocketmq.domin.ChargeOrderRequest;
 import com.wuzx.rocketmq.domin.Result;
 import com.wuzx.rocketmq.service.ChargeOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,7 +24,7 @@ public class OrderChargeController {
 
 
     @PostMapping(value = "charge")
-    public Result chargeOrder(ChargeOrderRequest orderRequest) {
+    public Result chargeOrder(@ModelAttribute(name = "orderRequest") ChargeOrderRequest orderRequest) {
         return orderService.chargeOrderQuenue(orderRequest);
     }
 }

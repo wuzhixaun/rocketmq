@@ -2,6 +2,7 @@ package com.wuzx.rocketmq.consumer;
 
 import com.wuzx.rocketmq.config.RocketMQNamesrvConfig;
 import com.wuzx.rocketmq.constant.RocketMqConstant;
+import com.wuzx.rocketmq.util.LogExceptionWapper;
 import org.apache.rocketmq.client.consumer.DefaultMQPushConsumer;
 import org.apache.rocketmq.client.consumer.listener.MessageListenerConcurrently;
 import org.apache.rocketmq.client.exception.MQClientException;
@@ -10,8 +11,10 @@ import org.apache.rocketmq.common.protocol.heartbeat.MessageModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import javax.annotation.Resource;
 
 /**
@@ -20,6 +23,7 @@ import javax.annotation.Resource;
  * @author: wuzhixuan
  * @create: 2020-03-30 16:49
  **/
+@Service
 public class MqOrderConsumer {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MqOrderConsumer.class);
@@ -53,9 +57,18 @@ public class MqOrderConsumer {
             defaultMQPushConsumer.subscribe(RocketMqConstant.ORDER_EVENT_TYPE.ORDER_EVENT.getTopic(), "*");
             // 启动消费者
             defaultMQPushConsumer.start();
+
+            LOGGER.info("----订单消费者-启动--");
         } catch (MQClientException e) {
-            e.printStackTrace();
+            LOGGER.error("[订单消费者]--MqOrderProducer加载异常!e={}", LogExceptionWapper.getStackTrace(e));
+            throw new RuntimeException("[订单消费者]--加载异常!", e);
         }
+    }
+
+    @PreDestroy
+    public void shutDownConsumer() {
+        defaultMQPushConsumer.shutdown();
+        LOGGER.info("----订单消费者-关闭--");
     }
 
 }

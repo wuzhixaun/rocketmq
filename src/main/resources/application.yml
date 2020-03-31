@@ -1,3 +1,7 @@
-#Rokcet NamesrvµØÖ·
+#
+server:
+  port: 9999
+#namesrvåœ°å€
 namesrvAddr :
   120.78.81.89:9876
+

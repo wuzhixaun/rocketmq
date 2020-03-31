@@ -8,9 +8,10 @@ import org.apache.rocketmq.client.producer.DefaultMQProducer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 
 /**
  * @program: rocketmq
@@ -18,7 +19,7 @@ import javax.annotation.PostConstruct;
  * @author: wuzhixuan
  * @create: 2020-03-30 16:48
  **/
-@Component
+@Service
 public class MqOrderProducer {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MqOrderProducer.class);
@@ -43,9 +44,10 @@ public class MqOrderProducer {
         //启动Producer实例
         try {
             defaultMQProducer.start();
+            LOGGER.info("----订单生产者-启动--");
         } catch (MQClientException e) {
             LOGGER.error("[订单生产者]--MqOrderProducer加载异常!e={}", LogExceptionWapper.getStackTrace(e));
-            throw new RuntimeException("[秒杀订单生产者]--SecKillChargeOrderProducer加载异常!", e);
+            throw new RuntimeException("[订单生产者]--加载异常!", e);
         }
 
     }
@@ -58,5 +60,11 @@ public class MqOrderProducer {
    */
     public DefaultMQProducer getOrderDefaultProducer() {
         return defaultMQProducer;
+    }
+
+    @PreDestroy
+    public void shutDownProducer() {
+        defaultMQProducer.shutdown();
+        LOGGER.info("----订单生产者-关闭--");
     }
 }

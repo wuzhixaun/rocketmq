@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class RocketMQNamesrvConfig {
 
-    @Value("namesrvAddr")
+    @Value("${namesrvAddr}")
     private String nameSrvAddr;
 
     public String getNameSrvAddr() {
