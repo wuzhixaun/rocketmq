@@ -20,7 +20,7 @@
         <maven.compiler.target>1.8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <guava-version>26.0-jre</guava-version>
+        <guava-version>29.0-jre</guava-version>
         <rocketmq-version>4.3.0</rocketmq-version>
     </properties>
 
